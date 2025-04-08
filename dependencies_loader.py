@@ -1,22 +1,30 @@
 import xmltodict
-
-
-def loads(files):
-    all_dependencies = []
-    for file in files:
-        all_dependencies = all_dependencies + load(file)
-    return all_dependencies
+from properties_loader import loads as loads_properties
 
 
 def load(file_path):
+    return loads([file_path])
+
+
+def loads(files):
+    properties = loads_properties(files)
+
+    all_dependencies = []
+    for file in files:
+        all_dependencies = all_dependencies + _load_dependencies(file, properties)
+    return all_dependencies
+
+
+def _load_dependencies(file_path, properties):
     with open(file_path, "rb") as file:
         pom = xmltodict.parse(file)
-        properties = prepare_properties(pom)
-        return prepare_dependencies(pom, properties)
+        return _prepare_dependencies(pom, properties)
 
 
-def prepare_dependencies(pom, properties):
+def _prepare_dependencies(pom, properties):
     dependencies = []
+    if 'dependencyManagement' not in pom['project']:
+        return dependencies
     dependencies_source = pom['project']['dependencyManagement']['dependencies']
     for dependency in dependencies_source['dependency']:
         version = dependency['version'].replace("{", "").replace("$", "").replace("}", "")
@@ -27,11 +35,3 @@ def prepare_dependencies(pom, properties):
         dependencies.append({"groupId": group_id, "artifactId": artifact_id, "version": version})
     return dependencies
 
-
-def prepare_properties(pom):
-    properties = {}
-    if 'properties' in pom['project']:
-        properties_source = pom['project']['properties']
-        for property in properties_source:
-            properties[property] = properties_source[property]
-    return properties

@@ -16,11 +16,24 @@ class MyTestCase(unittest.TestCase):
                         {"groupId": "com.sample.one", "artifactId": "sample-one-one", "version": "2.4.1"},
                         {"groupId": "com.sample.one", "artifactId": "sample-one-two", "version": "2.0.0"}]
         actual = compare(reference_dependencies, dependencies)
-        self.assertEqual(actual, 'com.sample.two:sample-two-one:4.3.2 != 4.0.2 \n'
-                                 'com.sample.two:sample-two-two:4.3.2 == \n'
-                                 'com.sample.two:sample-two-three:4.3.2 not found \n'
-                                 'com.sample.one:sample-one-one:2.4.0 != 2.4.1 \n'
-                                 'com.sample.one:sample-one-two:2.0.0 == \n')
+        expected = [
+            {"reference": "com.sample.two:sample-two-one:4.3.2",
+             "operator": "!=",
+             "compared_to": "com.sample.two:sample-two-one:4.0.2"},
+            {"reference": "com.sample.two:sample-two-two:4.3.2",
+             "operator": "==",
+             "compared_to": "com.sample.two:sample-two-two:4.3.2"},
+            {"reference": "com.sample.two:sample-two-three:4.3.2",
+             "operator": "not found",
+             "compared_to": ""},
+            {"reference": "com.sample.one:sample-one-one:2.4.0",
+             "operator": "!=",
+             "compared_to": "com.sample.one:sample-one-one:2.4.1"},
+            {"reference": "com.sample.one:sample-one-two:2.0.0",
+             "operator": "==",
+             "compared_to": "com.sample.one:sample-one-two:2.0.0"}
+        ]
+        self.assertEqual(actual, expected)
 
 
 if __name__ == '__main__':

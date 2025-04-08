@@ -2,6 +2,7 @@
 from pom_provider import get_pom
 from dependencies_loader import loads
 from dependencies_comparator import compare
+from printer import print_dependencies
 import json
 
 
@@ -17,4 +18,5 @@ if __name__ == '__main__':
         config = json.load(config_file)
         reference_dependencies = loads(_get_files(config['reference_poms']))
         dependencies = loads(_get_files(config['poms']))
-        print(compare(reference_dependencies, dependencies))
+        compared_dependencies = compare(reference_dependencies, dependencies)
+        print_dependencies(compared_dependencies, "CSV")

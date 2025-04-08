@@ -21,6 +21,12 @@ class MyTestCase(unittest.TestCase):
                     {"groupId": "com.sample.two", "artifactId": "sample-two-three", "version": "4.3.2"}]
         self.assertEqual(actual, expected)
 
+    def test_read_dependencies(self):
+        actual = loads(["pom_child.xml", "pom_parent.xml"])
+        expected = [{"groupId": "com.sample.one", "artifactId": "sample-one-one", "version": "2.4.0"},
+                    {"groupId": "com.sample.one", "artifactId": "sample-one-two", "version": "2.0.0"}]
+        self.assertEqual(actual, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
