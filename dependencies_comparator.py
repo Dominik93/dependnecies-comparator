@@ -11,9 +11,9 @@ def compare(reference_dependencies, dependencies):
 def _compare_dependency(reference_dependency, dependency):
     if dependency is not None:
         if reference_dependency['version'] == dependency['version']:
-            return "=="
+            return "eq"
         else:
-            return "!="
+            return "ne"
     else:
         return "not found"
 
@@ -29,5 +29,5 @@ def _find_dependency(reference_dependency, dependencies):
 def _to_str(dependency):
     if dependency is None:
         return ""
-    return dependency['groupId'] + ":" + dependency['artifactId'] + \
+    return dependency['parent'] + ":" + dependency['groupId'] + ":" + dependency['artifactId'] + \
         ":" + dependency['version']

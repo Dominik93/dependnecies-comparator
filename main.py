@@ -19,4 +19,4 @@ if __name__ == '__main__':
         reference_dependencies = loads(_get_files(config['reference_poms']))
         dependencies = loads(_get_files(config['poms']))
         compared_dependencies = compare(reference_dependencies, dependencies)
-        print_dependencies(compared_dependencies, "CSV")
+        print_dependencies(compared_dependencies, config['printer'])
