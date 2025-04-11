@@ -27,7 +27,7 @@ def _prepare_dependencies(pom, properties):
         return dependencies
     parent = pom['project']['artifactId']
     dependencies_source = pom['project']['dependencyManagement']['dependencies']
-    for dependency in dependencies_source['dependency']:
+    for dependency in _get_dependencies(dependencies_source):
         version = dependency['version'].replace("{", "").replace("$", "").replace("}", "")
         if version in properties:
             version = properties[version]
@@ -36,3 +36,9 @@ def _prepare_dependencies(pom, properties):
         dependencies.append({"parent": parent, "groupId": group_id, "artifactId": artifact_id, "version": version})
     return dependencies
 
+
+def _get_dependencies(dependencies_source):
+    dependency = dependencies_source['dependency']
+    if isinstance(dependency, dict):
+        return [dependency]
+    return dependency
