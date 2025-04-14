@@ -26,6 +26,14 @@ def _prepare_properties(pom):
     properties = {}
     if 'properties' in pom['project']:
         properties_source = pom['project']['properties']
-        for property in properties_source:
-            properties[property] = properties_source[property]
+        for property_source in properties_source:
+            property_value = properties_source[property_source]
+            properties[property_source] = _parse(property_value) if property_value is not None else ""
     return properties
+
+
+def _parse(property_value):
+    if isinstance(property_value, list):
+        return property_value[0]
+    else:
+        return property_value
