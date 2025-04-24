@@ -1,4 +1,7 @@
-def compare(reference_dependencies, dependencies):
+from models import Dependency
+
+
+def compare(reference_dependencies: list[Dependency], dependencies: list[Dependency]):
     result = []
     for reference_dependency in reference_dependencies:
         dependency = _find_dependency(reference_dependency, dependencies)
@@ -8,9 +11,9 @@ def compare(reference_dependencies, dependencies):
     return result
 
 
-def _compare_dependency(reference_dependency, dependency):
+def _compare_dependency(reference_dependency: Dependency, dependency: Dependency):
     if dependency is not None:
-        if reference_dependency['version'] == dependency['version']:
+        if reference_dependency.version == dependency.version:
             return "eq"
         else:
             return "ne"
@@ -18,16 +21,16 @@ def _compare_dependency(reference_dependency, dependency):
         return "not found"
 
 
-def _find_dependency(reference_dependency, dependencies):
+def _find_dependency(reference_dependency: Dependency, dependencies: list[Dependency]):
     for dependency in dependencies:
-        if reference_dependency['groupId'] == dependency['groupId'] \
-                and reference_dependency['artifactId'] == dependency['artifactId']:
+        if reference_dependency.group_id == dependency.group_id \
+                and reference_dependency.artifact_id == dependency.artifact_id:
             return dependency
     return None
 
 
-def _to_str(dependency):
+def _to_str(dependency: Dependency):
     if dependency is None:
         return ""
-    return dependency['parent'] + ":" + dependency['groupId'] + ":" + dependency['artifactId'] + \
-        ":" + dependency['version']
+    return dependency.parent + ":" + dependency.group_id + ":" + dependency.artifact_id + \
+        ":" + dependency.version

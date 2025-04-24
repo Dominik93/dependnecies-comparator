@@ -1,20 +1,23 @@
 import unittest
 from dependencies_comparator import compare
+from models import Dependency
 
 
 class MyTestCase(unittest.TestCase):
     def test_compare_dependencies(self):
         reference_dependencies = [
-            {"parent": "reference", "groupId": "com.sample.two", "artifactId": "sample-two-one", "version": "4.3.2"},
-            {"parent": "reference", "groupId": "com.sample.two", "artifactId": "sample-two-two", "version": "4.3.2"},
-            {"parent": "reference", "groupId": "com.sample.two", "artifactId": "sample-two-three", "version": "4.3.2"},
-            {"parent": "reference", "groupId": "com.sample.one", "artifactId": "sample-one-one", "version": "2.4.0"},
-            {"parent": "reference", "groupId": "com.sample.one", "artifactId": "sample-one-two", "version": "2.0.0"}]
+            Dependency("reference", "com.sample.two", "sample-two-one", "4.3.2", ""),
+            Dependency("reference", "com.sample.two", "sample-two-two", "4.3.2", ""),
+            Dependency("reference", "com.sample.two", "sample-two-three", "4.3.2", ""),
 
-        dependencies = [{"parent": "compared_to", "groupId": "com.sample.two", "artifactId": "sample-two-one", "version": "4.0.2"},
-                        {"parent": "compared_to", "groupId": "com.sample.two", "artifactId": "sample-two-two", "version": "4.3.2"},
-                        {"parent": "compared_to", "groupId": "com.sample.one", "artifactId": "sample-one-one", "version": "2.4.1"},
-                        {"parent": "compared_to", "groupId": "com.sample.one", "artifactId": "sample-one-two", "version": "2.0.0"}]
+            Dependency("reference", "com.sample.one", "sample-one-one", "2.4.0", ""),
+            Dependency("reference", "com.sample.one", "sample-one-two", "2.0.0", "")]
+
+        dependencies = [
+            Dependency("compared_to", "com.sample.two", "sample-two-one", "4.0.2", ""),
+            Dependency("compared_to", "com.sample.two", "sample-two-two", "4.3.2", ""),
+            Dependency("compared_to", "com.sample.one", "sample-one-one", "2.4.1", ""),
+            Dependency("compared_to", "com.sample.one", "sample-one-two", "2.0.0", "")]
         actual = compare(reference_dependencies, dependencies)
         expected = [
             {"reference": "reference:com.sample.two:sample-two-one:4.3.2",

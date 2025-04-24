@@ -1,15 +1,27 @@
 {
   "printer": "CSV | CONSOLE",
-  "reference_poms": [
+  "providers": [
     {
-      "path": "./sample.xml",
+      "name": "CURRENT_DIR",
+      "path": "./",
       "strategy": "FILE"
+    },
+    {
+      "name": "CENTRAL_MAVEN",
+      "path": "https://repo1.maven.org/maven2/",
+      "strategy": "HTTP"
     }
   ],
-  "poms": [
+  "references": [
     {
-      "path": "https://repo1.maven.org/maven2/com/sample/sample-1.2.0.pom",
-      "strategy": "HTTP"
+      "path": "pom.xml",
+      "provider": "CURRENT_DIR"
+    }
+  ],
+  "compared_to": [
+    {
+      "path": "com/sample/sample-dependencies/1.0.0/sample-dependencies-1.0.0.pom",
+      "provider": "CENTRAL_MAVEN"
     }
   ]
 }
