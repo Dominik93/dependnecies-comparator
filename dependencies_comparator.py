@@ -15,8 +15,10 @@ def _compare_dependency(reference_dependency: Dependency, dependency: Dependency
     if dependency is not None:
         if reference_dependency.version == dependency.version:
             return "eq"
+        if reference_dependency.version > dependency.version:
+            return "ge"
         else:
-            return "ne"
+            return "lt"
     else:
         return "not found"
 

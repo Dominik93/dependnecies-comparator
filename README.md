@@ -79,16 +79,28 @@ config.json
 ```json
 {
   "printer": "CSV",
-  "reference_poms": [
+  "providers": [
     {
-      "path": "./pom-one.xml",
+      "name": "CURRENT_DIR",
+      "path": "./",
       "strategy": "FILE"
+    },
+    {
+      "name": "CENTRAL_MAVEN",
+      "path": "https://repo1.maven.org/maven2/",
+      "strategy": "HTTP"
     }
   ],
-  "poms": [
+  "references": [
+    {
+      "path": "./pom-one.xml",
+      "provider": "CURRENT_DIR"
+    }
+  ],
+  "compared_to": [
     {
       "path": "./pom-two.xml",
-      "strategy": "FILE"
+      "provider": "CURRENT_DIR"
     }
   ]
 }

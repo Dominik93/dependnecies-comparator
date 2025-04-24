@@ -28,9 +28,9 @@ def _load_properties(file_path: FilePathInfo):
 
 
 def _prepare_properties(pom: dict):
-    properties = {}
-    properties['project.version'] = pom['project']['version'] if 'version' in pom['project'] else ""
-    properties['project.version'] = pom['project']['parent']['version'] if 'parent' in pom['project'] else ""
+    properties = {'project.version': pom['project']['version'] if 'version' in pom['project'] else ""}
+    if properties['project.version'] != '':
+        properties['project.version'] = pom['project']['parent']['version'] if 'parent' in pom['project'] else ""
     if 'properties' in pom['project']:
         properties_source = pom['project']['properties']
         for property_source in properties_source:
