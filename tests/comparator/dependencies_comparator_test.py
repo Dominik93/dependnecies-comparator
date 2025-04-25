@@ -2,6 +2,7 @@ import unittest
 
 from dependencies_comparator import compare
 from models import Dependency
+from printer import Row
 
 
 class MyTestCase(unittest.TestCase):
@@ -21,21 +22,15 @@ class MyTestCase(unittest.TestCase):
             Dependency("compared_to", "com.sample.one", "sample-one-two", "2.0.0", "")]
         actual = compare(reference_dependencies, dependencies)
         expected = [
-            {"reference": "reference:com.sample.two:sample-two-one:4.3.2",
-             "operator": "ge",
-             "compared_to": "compared_to:com.sample.two:sample-two-one:4.0.2"},
-            {"reference": "reference:com.sample.two:sample-two-two:4.3.2",
-             "operator": "eq",
-             "compared_to": "compared_to:com.sample.two:sample-two-two:4.3.2"},
-            {"reference": "reference:com.sample.two:sample-two-three:4.3.2",
-             "operator": "not found",
-             "compared_to": ""},
-            {"reference": "reference:com.sample.one:sample-one-one:2.4.0",
-             "operator": "lt",
-             "compared_to": "compared_to:com.sample.one:sample-one-one:2.4.1"},
-            {"reference": "reference:com.sample.one:sample-one-two:2.0.0",
-             "operator": "eq",
-             "compared_to": "compared_to:com.sample.one:sample-one-two:2.0.0"}
+            Row("reference:com.sample.two:sample-two-one:4.3.2", "ge",
+                "compared_to:com.sample.two:sample-two-one:4.0.2"),
+            Row("reference:com.sample.two:sample-two-two:4.3.2", "eq",
+                "compared_to:com.sample.two:sample-two-two:4.3.2"),
+            Row("reference:com.sample.two:sample-two-three:4.3.2", "not found", ""),
+            Row("reference:com.sample.one:sample-one-one:2.4.0", "lt",
+                "compared_to:com.sample.one:sample-one-one:2.4.1"),
+            Row("reference:com.sample.one:sample-one-two:2.0.0", "eq",
+                "compared_to:com.sample.one:sample-one-two:2.0.0")
         ]
         self.assertEqual(actual, expected)
 

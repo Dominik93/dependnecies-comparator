@@ -3,14 +3,19 @@ import xmltodict
 from models import File, DependencyFactory
 
 
-def load_properties(file: File):
-    return loads_properties([file])
-
-
-def loads_properties(files: list[File]):
+def loads_properties(files: list[File]) -> dict:
     properties = {}
     for file in files:
-        properties.update(_load_properties(file))
+        properties.update(load_properties(file))
+    return _resolve_placeholders(properties)
+
+
+def load_properties(file: File) -> dict:
+    properties = _load_properties(file)
+    return _resolve_placeholders(properties)
+
+
+def _resolve_placeholders(properties: dict) -> dict:
     for key in properties:
         value = properties[key]
         if "$" in value:
@@ -21,14 +26,13 @@ def loads_properties(files: list[File]):
     return properties
 
 
-def _load_properties(file: File):
+def _load_properties(file: File) -> dict:
     with open(file.local_path(), "rb") as f:
         pom = xmltodict.parse(f)
         return _prepare_properties(file, pom)
 
 
-def _prepare_properties(file: File, pom: dict):
-
+def _prepare_properties(file: File, pom: dict) -> dict:
     properties = {'project.version': pom['project']['version'] if 'version' in pom['project'] else ""}
     if properties['project.version'] == '':
         properties['project.version'] = pom['project']['parent']['version'] if 'parent' in pom['project'] else ""
@@ -43,7 +47,7 @@ def _prepare_properties(file: File, pom: dict):
     return properties
 
 
-def _prepare_parent_properties(file: File, pom: dict):
+def _prepare_parent_properties(file: File, pom: dict) -> dict:
     print(f'Prepare parent properties')
     source = pom['project']['artifactId']
     if 'parent' in pom['project']:
@@ -52,7 +56,7 @@ def _prepare_parent_properties(file: File, pom: dict):
     return {}
 
 
-def _parse(property_value: list | dict):
+def _parse(property_value: list | dict) -> dict:
     if isinstance(property_value, list):
         return property_value[0]
     else:

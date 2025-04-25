@@ -66,8 +66,11 @@ class Dependency:
     def prepare_path(self):
         return f'{self.group_id.replace(".", "/")}/{self.artifact_id}/{self.version}/{self.artifact_id}-{self.version}.pom'
 
+    def same(self, dependency):
+        return self.group_id == dependency.group_id and self.artifact_id == dependency.artifact_id
+
     def __str__(self):
-        return f'{self.source}:{self.group_id}:{self.artifact_id}:{self.version}:{self.scope}'
+        return f'{self.source}:{self.group_id}:{self.artifact_id}:{self.version}'
 
     def __eq__(self, other):
         if not isinstance(other, Dependency):

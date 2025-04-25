@@ -1,20 +1,18 @@
 import xmltodict
 
 from models import Dependency, File, DependencyFactory
-from properties_loader import loads_properties
+from properties_loader import load_properties
 
 
-def load_dependencies(file: File) -> list[Dependency]:
-    return loads_dependencies([file])
-
-
-def loads_dependencies(files: list[File]) -> list[Dependency]:
-    properties = loads_properties(files)
-
+def loads_dependencies(properties: dict, files: list[File]) -> list[Dependency]:
     all_dependencies = []
     for file in files:
-        all_dependencies = all_dependencies + _load_dependencies(file, properties)
+        all_dependencies.extend(load_dependencies(properties, file))
     return all_dependencies
+
+
+def load_dependencies(properties: dict, file: File) -> list[Dependency]:
+    return _load_dependencies(file, properties)
 
 
 def _load_dependencies(file: File, properties: dict) -> list[Dependency]:
@@ -42,7 +40,9 @@ def _prepare_dependencies(file: File, pom: dict, properties: dict) -> list[Depen
 
 
 def _prepare_imported_dependencies(file: File, dependency: Dependency) -> list[Dependency]:
-    return load_dependencies(file.spawn(dependency.prepare_path()))
+    file_spawn = file.spawn(dependency.prepare_path())
+    properties = load_properties(file_spawn)
+    return load_dependencies(properties, file_spawn)
 
 
 def _get_dependencies(dependencies_source: dict):
