@@ -1,4 +1,5 @@
 import unittest
+
 from dependencies_comparator import compare
 from models import Dependency
 
@@ -21,7 +22,7 @@ class MyTestCase(unittest.TestCase):
         actual = compare(reference_dependencies, dependencies)
         expected = [
             {"reference": "reference:com.sample.two:sample-two-one:4.3.2",
-             "operator": "ne",
+             "operator": "ge",
              "compared_to": "compared_to:com.sample.two:sample-two-one:4.0.2"},
             {"reference": "reference:com.sample.two:sample-two-two:4.3.2",
              "operator": "eq",
@@ -30,7 +31,7 @@ class MyTestCase(unittest.TestCase):
              "operator": "not found",
              "compared_to": ""},
             {"reference": "reference:com.sample.one:sample-one-one:2.4.0",
-             "operator": "ne",
+             "operator": "lt",
              "compared_to": "compared_to:com.sample.one:sample-one-one:2.4.1"},
             {"reference": "reference:com.sample.one:sample-one-two:2.0.0",
              "operator": "eq",

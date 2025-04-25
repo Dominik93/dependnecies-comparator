@@ -34,5 +34,5 @@ def _find_dependency(reference_dependency: Dependency, dependencies: list[Depend
 def _to_str(dependency: Dependency):
     if dependency is None:
         return ""
-    return dependency.parent + ":" + dependency.group_id + ":" + dependency.artifact_id + \
+    return dependency.source + ":" + dependency.group_id + ":" + dependency.artifact_id + \
         ":" + dependency.version
