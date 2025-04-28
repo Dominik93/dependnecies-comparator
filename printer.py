@@ -1,5 +1,13 @@
 import json
 
+condition_by_name = {
+    "result": (lambda x: True),
+    "eq": (lambda x: x.operator == 'eq'),
+    "lt": (lambda x: x.operator == 'lt'),
+    "gt": (lambda x: x.operator == 'gt'),
+    "not_found": (lambda x: x.operator == 'not found')
+}
+
 
 class Row:
 
@@ -31,9 +39,14 @@ def _print_console(dependencies: list[Row]):
 
 
 def _print_csv(dependencies: list[Row]):
-    f = open("result.csv", "w")
+    for key in condition_by_name:
+        _print_only_when(key, dependencies, condition_by_name[key])
+
+
+def _print_only_when(name, dependencies, condition):
+    f = open(f"{name}.csv", "w")
     header = Row("reference", "operator", "compared_to")
-    dependencies.insert(0, header)
-    for dependency in dependencies:
+    f.write(header.csv() + "\n")
+    for dependency in list(filter(lambda x: condition(x), dependencies)):
         f.write(dependency.csv() + "\n")
     f.close()
