@@ -1,5 +1,6 @@
 from models import Dependency
 from printer import Row
+from version_comparator import compare_versions
 
 
 def compare(reference_dependencies: list[Dependency], dependencies: list[Dependency]) -> list[Row]:
@@ -16,12 +17,10 @@ def _compare_dependency(reference_dependency: Dependency, dependency: Dependency
 
 
 def _compare(reference_dependency: Dependency, dependency: Dependency) -> str:
-    if reference_dependency.version == dependency.version:
+    value = compare_versions(dependency.version, reference_dependency.version)
+    if value == 0:
         return "eq"
-    if reference_dependency.version > dependency.version:
-        return "ge"
-    else:
-        return "lt"
+    return "ge" if value == 1 else "lt"
 
 
 def _find_dependency(reference_dependency: Dependency, dependencies: list[Dependency]) -> Dependency | None:

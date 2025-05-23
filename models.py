@@ -39,8 +39,11 @@ class DefaultFile(File):
         self._local_path = self.loader_factory.create(self.path, self.provider).load()
         return self._local_path
 
+    def __repr__(self):
+        return self.__str__()
+
     def __str__(self):
-        return f'Path: {self.path}, provider {self.provider}, local path: {self._local_path}'
+        return str(self.__dict__)
 
 
 class DependencyFactory:
@@ -86,8 +89,11 @@ class Provider:
         self.path = path
         self.strategy = strategy
 
+    def __repr__(self):
+        return self.__str__()
+
     def __str__(self):
-        return f'Name: {self.name}, path: {self.path}, strategy: {self.strategy}'
+        return str(self.__dict__)
 
 
 class Providers:
@@ -101,6 +107,12 @@ class Providers:
                 return provider
         return None
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return str(self.__dict__)
+
 
 class Config:
     def __init__(self, printer: str, providers: Providers, references: list[DefaultFile],
@@ -112,6 +124,12 @@ class Config:
 
     def find_provider(self, provider_name: str) -> Provider | None:
         return self.providers.find_provider(provider_name)
+
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return str(self.__dict__)
 
 
 class DefaultFileProviderFactory(FileProviderFactory):

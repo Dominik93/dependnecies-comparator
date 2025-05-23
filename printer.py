@@ -19,6 +19,12 @@ class Row:
     def csv(self):
         return self.reference + ";" + self.operator + ";" + self.compared_to
 
+    def __repr__(self):
+        return self.__str__()
+
+    def __str__(self):
+        return str(self.__dict__)
+
     def __eq__(self, other):
         if not isinstance(other, Row):
             # don't attempt to compare against unrelated types

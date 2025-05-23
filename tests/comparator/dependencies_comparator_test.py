@@ -5,7 +5,7 @@ from models import Dependency
 from printer import Row
 
 
-class MyTestCase(unittest.TestCase):
+class DependenciesComparatorTestCase(unittest.TestCase):
     def test_compare_dependencies(self):
         reference_dependencies = [
             Dependency("reference", "com.sample.two", "sample-two-one", "4.3.2", ""),
@@ -20,7 +20,9 @@ class MyTestCase(unittest.TestCase):
             Dependency("compared_to", "com.sample.two", "sample-two-two", "4.3.2", ""),
             Dependency("compared_to", "com.sample.one", "sample-one-one", "2.4.1", ""),
             Dependency("compared_to", "com.sample.one", "sample-one-two", "2.0.0", "")]
+
         actual = compare(reference_dependencies, dependencies)
+
         expected = [
             Row("reference:com.sample.two:sample-two-one:4.3.2", "ge",
                 "compared_to:com.sample.two:sample-two-one:4.0.2"),
