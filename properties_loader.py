@@ -1,7 +1,10 @@
 import xmltodict
 
+from commons.logger import get_logger
 from models import File, DependencyFactory
 
+
+logger = get_logger("PropertiesLoader")
 
 def loads_properties(files: list[File]) -> dict:
     properties = {}
@@ -21,7 +24,7 @@ def _resolve_placeholders(properties: dict) -> dict:
         if "$" in value:
             raw_value = value.replace("{", "").replace("$", "").replace("}", "")
             new_value = properties[raw_value] if raw_value in properties else value
-            print(f'Resolve placeholder {key}:{value} as {new_value}')
+            logger.debug("_prepare_parent_properties", f'Resolve placeholder {key}:{value} as {new_value}')
             properties[key] = new_value
     return properties
 
@@ -37,18 +40,18 @@ def _prepare_properties(file: File, pom: dict) -> dict:
     if properties['project.version'] == '':
         properties['project.version'] = pom['project']['parent']['version'] if 'parent' in pom['project'] else ""
     properties.update(_prepare_parent_properties(file, pom))
-    print(f"Prepared property project.version:{properties['project.version']}")
+    logger.debug("_prepare_properties", f"Prepared property project.version:{properties['project.version']}")
     if 'properties' in pom['project']:
         properties_source = pom['project']['properties']
         for property_source in properties_source:
             property_value = properties_source[property_source]
             properties[property_source] = _parse(property_value) if property_value is not None else ""
-            print(f"Prepared property {property_source}:{properties[property_source]}")
+            logger.debug("_prepare_properties", f"Prepared property {property_source}:{properties[property_source]}")
     return properties
 
 
 def _prepare_parent_properties(file: File, pom: dict) -> dict:
-    print(f'Prepare parent properties')
+    logger.debug("_prepare_parent_properties", f'Prepare parent properties')
     source = pom['project']['artifactId']
     if 'parent' in pom['project']:
         dependency = DependencyFactory().create(source, pom['project']['parent'], {})

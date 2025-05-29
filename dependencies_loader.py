@@ -1,7 +1,10 @@
 import xmltodict
 
+from commons.logger import get_logger
 from models import Dependency, File, DependencyFactory
 from properties_loader import load_properties
+
+logger = get_logger("DependenciesLoader")
 
 
 def loads_dependencies(properties: dict, files: list[File]) -> list[Dependency]:
@@ -16,7 +19,7 @@ def load_dependencies(properties: dict, file: File) -> list[Dependency]:
 
 
 def _load_dependencies(file: File, properties: dict) -> list[Dependency]:
-    print(f'Load dependencies from {file}')
+    logger.debug("_load_dependencies", f'Load dependencies from {file}')
     with open(file.local_path(), "rb") as f:
         pom = xmltodict.parse(f)
         return _prepare_dependencies(file, pom, properties)
@@ -31,10 +34,10 @@ def _prepare_dependencies(file: File, pom: dict, properties: dict) -> list[Depen
     for dependency in _get_dependencies(dependencies_source):
         dependency = DependencyFactory().create(source, dependency, properties)
         if dependency.scope == 'import':
-            print(f'Load imported dependencies {dependency}')
+            logger.debug("_prepare_dependencies", f'Load imported dependencies {dependency}')
             dependencies.extend(_prepare_imported_dependencies(file, dependency))
         else:
-            print(f'Add dependency {dependency}')
+            logger.debug("_prepare_dependencies", f'Add dependency {dependency}')
             dependencies.append(dependency)
     return dependencies
 

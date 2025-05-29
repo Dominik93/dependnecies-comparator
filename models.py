@@ -1,5 +1,7 @@
 import urllib.request
 
+from commons.logger import get_logger
+
 
 class FileProvider:
 
@@ -136,12 +138,13 @@ class DefaultFileProviderFactory(FileProviderFactory):
 
     def __init__(self, providers: Providers):
         self.providers = providers
+        self.logger = get_logger("DefaultFileProviderFactory")
 
     def create(self, path: str, provider_name: str):
         provider = self.providers.find_provider(provider_name)
 
         full_path = provider.path + path
-        print(f'Get {provider.strategy} {full_path}')
+        self.logger.info("create", f'Get {provider.strategy} {full_path}')
         if provider.strategy == 'HTTP':
             return HttpFileProvider(full_path)
         if provider.strategy == 'FILE':

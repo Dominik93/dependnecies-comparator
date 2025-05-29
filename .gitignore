@@ -174,7 +174,7 @@ cython_debug/
 .pypirc
 
 .idea
-*.json
+config.json
 *.iml
 
 runtime
