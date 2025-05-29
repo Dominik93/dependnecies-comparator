@@ -1,21 +1,7 @@
-import json
-
 from models import Config, Provider, DefaultFile, DefaultFileProviderFactory, Providers, FileProviderFactory
 
-CONFIG_JSON = 'config.json'
 
-__config = None
-
-
-def load_configuration() -> Config:
-    global __config
-    return __config if __config is not None else _load()
-
-
-def _load() -> Config:
-    with open(CONFIG_JSON) as config_file:
-        config = json.load(config_file)
-
+def create_config(config) -> Config:
     providers = Providers(_load_providers(config))
     factory = DefaultFileProviderFactory(providers)
 
@@ -28,8 +14,7 @@ def _load() -> Config:
 def _load_dependencies(dependencies: list, factory: FileProviderFactory):
     references = []
     for reference in dependencies:
-        references.append(
-            DefaultFile(factory, reference['path'], reference['provider']))
+        references.append(DefaultFile(factory, reference['path'], reference['provider']))
     return references
 
 
