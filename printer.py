@@ -50,7 +50,7 @@ def _print_csv(dependencies: list[Row]):
 
 
 def _print_only_when(name, dependencies, condition):
-    f = open(f"{name}.csv", "w")
+    f = open(f"resources/{name}.csv", "w")
     header = Row("reference", "operator", "compared_to")
     f.write(header.csv() + "\n")
     for dependency in list(filter(lambda x: condition(x), dependencies)):

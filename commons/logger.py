@@ -4,6 +4,8 @@ import time
 from datetime import datetime
 from enum import Enum
 
+import yaml
+
 
 class Level(Enum):
     ALL = 0
@@ -19,12 +21,6 @@ __root_level: Level = Level.INFO
 
 __level = {}
 
-if os.path.isfile("logback.json"):
-    with open("logback.json", 'r', encoding="utf-8") as file:
-        logback = json.load(file)
-        for key in logback:
-            __level[key] = Level[logback[key]]
-
 
 def set_root_level(level: Level):
     global __root_level
@@ -34,6 +30,23 @@ def set_root_level(level: Level):
 def set_level(name: str, level: Level):
     global __level
     __level[name] = level
+
+
+def _load_logback(file_name: str, provider):
+    with open(file_name) as file:
+        logback = provider(file)
+        logging = logback['logging']
+        set_root_level(Level[logging['root']])
+        for key in logging:
+            if key != 'root':
+                set_level(key, Level[logging[key]])
+
+
+if os.path.isfile("logback.json"):
+    _load_logback("logback.json", lambda file: json.load(file))
+
+if os.path.isfile("logback.yaml"):
+    _load_logback("logback.yaml", lambda file: yaml.safe_load(file))
 
 
 def get_logger(name: str):

@@ -1,3 +1,6 @@
 {
-  "DependenciesLoader": "OFF"
+  "logging": {
+    "root" : "DEBUG",
+    "DependenciesLoader": "OFF"
+  }
 }

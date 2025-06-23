@@ -177,6 +177,7 @@ cython_debug/
 config.json
 *.iml
 
-runtime
+runtime/*.pom
+runtime/*/*
 *.csv
 *.xml
