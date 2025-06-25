@@ -53,16 +53,18 @@ class DependencyFactory:
     def create(self, source: str, dependency: dict, properties: dict):
         version = dependency['version'].replace("{", "").replace("$", "").replace("}", "")
         version = properties[version] if version in properties else version
+        property = dependency['version']
         group_id = dependency['groupId']
         artifact_id = dependency['artifactId']
         scope = dependency['scope'] if 'scope' in dependency else "runtime"
-        return Dependency(source, group_id, artifact_id, version, scope)
+        return Dependency(source, property, group_id, artifact_id, version, scope)
 
 
 class Dependency:
 
-    def __init__(self, source: str, group_id: str, artifact_id: str, version: str, scope: str):
+    def __init__(self, source: str, property: str, group_id: str, artifact_id: str, version: str, scope: str):
         self.source = source
+        self.property = property
         self.group_id = group_id
         self.artifact_id = artifact_id
         self.version = version
@@ -82,7 +84,7 @@ class Dependency:
             # don't attempt to compare against unrelated types
             return NotImplemented
 
-        return self.source == other.source and self.group_id == other.group_id and self.artifact_id == other.artifact_id and self.version == other.version and self.scope == other.scope
+        return self.source == other.source and self.property == other.property and self.group_id == other.group_id and self.artifact_id == other.artifact_id and self.version == other.version and self.scope == other.scope
 
 
 class Provider:

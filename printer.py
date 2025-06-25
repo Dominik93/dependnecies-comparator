@@ -11,13 +11,17 @@ condition_by_name = {
 
 class Row:
 
-    def __init__(self, reference, operator, compared_to):
+    def __init__(self, reference, property, operator, compared_to):
         self.reference = reference
+        self.property = property
         self.operator = operator
         self.compared_to = compared_to
 
     def csv(self):
-        return self.reference + ";" + self.operator + ";" + self.compared_to
+        return ";".join([self.reference if self.reference is not None else "-",
+                         self.property if self.property is not None else "-",
+                         self.operator if self.operator is not None else "-",
+                         self.compared_to if self.compared_to is not None else "-"])
 
     def __repr__(self):
         return self.__str__()
@@ -30,7 +34,7 @@ class Row:
             # don't attempt to compare against unrelated types
             return NotImplemented
 
-        return self.reference == other.reference and self.operator == other.operator and self.compared_to == other.compared_to
+        return self.reference == other.reference and self.property == other.property and self.operator == other.operator and self.compared_to == other.compared_to
 
 
 def print_dependencies(dependencies: list[Row], strategy: str):
@@ -51,7 +55,7 @@ def _print_csv(dependencies: list[Row]):
 
 def _print_only_when(name, dependencies, condition):
     f = open(f"resources/{name}.csv", "w")
-    header = Row("reference", "operator", "compared_to")
+    header = Row("reference", "property", "operator", "compared_to")
     f.write(header.csv() + "\n")
     for dependency in list(filter(lambda x: condition(x), dependencies)):
         f.write(dependency.csv() + "\n")
