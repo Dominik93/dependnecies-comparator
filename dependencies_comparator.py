@@ -1,4 +1,4 @@
-from commons.optional import empty, Optional, of
+from commons.lists import find_item
 from models import Dependency
 from version_comparator import compare_versions
 
@@ -37,7 +37,7 @@ def compare(reference_dependencies: list[Dependency], dependencies: list[Depende
     for reference_dependency in reference_dependencies:
         reference = str(reference_dependency)
         property = reference_dependency.property
-        dependency = _find_dependency(reference_dependency, dependencies)
+        dependency = find_item(dependencies, lambda dep: reference_dependency.same(dep))
         operator = dependency.map(lambda dep: _compare(reference_dependency, dep)).or_get("not found")
         compared_to = dependency.map(lambda dep: str(dep)).or_get(None)
         result.append(CompareResult(reference, property, operator, compared_to))
@@ -46,10 +46,3 @@ def compare(reference_dependencies: list[Dependency], dependencies: list[Depende
 
 def _compare(reference_dependency: Dependency, dependency: Dependency) -> str:
     return sign_by_value[compare_versions(dependency.version, reference_dependency.version)]
-
-
-def _find_dependency(reference_dependency: Dependency, dependencies: list[Dependency]) -> Optional:
-    for dependency in dependencies:
-        if reference_dependency.same(dependency):
-            return of(dependency)
-    return empty()
