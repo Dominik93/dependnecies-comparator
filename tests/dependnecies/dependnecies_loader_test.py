@@ -1,6 +1,6 @@
 import unittest
 
-from dependencies_loader import load_dependencies, loads_dependencies
+from dependencies_loader import loads_dependencies
 from models import Dependency
 from tests.file import create_local_file
 

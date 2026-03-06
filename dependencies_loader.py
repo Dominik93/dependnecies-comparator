@@ -19,11 +19,8 @@ class Loader:
     def loads_dependencies(self, properties: dict, files: list[File]) -> list[Dependency]:
         all_dependencies = []
         for file in files:
-            all_dependencies.extend(self.load_dependencies(properties, file))
+            all_dependencies.extend(self._load_dependencies(file, properties))
         return all_dependencies
-
-    def load_dependencies(self, properties: dict, file: File) -> list[Dependency]:
-        return self._load_dependencies(file, properties)
 
     def _load_dependencies(self, file: File, properties: dict) -> list[Dependency]:
         logger.debug("_load_dependencies", f'Load dependencies from {file}')
