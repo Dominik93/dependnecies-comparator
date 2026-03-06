@@ -15,6 +15,7 @@ class Loader:
 
     def __init__(self, ):
         self._loaded_files = []
+        self.dependency_factory = DependencyFactory()
 
     def loads_dependencies(self, properties: dict, files: list[File]) -> list[Dependency]:
         all_dependencies = []
@@ -38,7 +39,7 @@ class Loader:
         source = pom['project']['artifactId']
         dependencies_source = pom['project']['dependencyManagement']['dependencies']
         for dependency in self._get_dependencies(dependencies_source):
-            dependency = DependencyFactory().create(source, dependency, properties)
+            dependency = self.dependency_factory.create(source, dependency, properties)
             if dependency.scope == 'import':
                 logger.debug("_prepare_dependencies", f'Load imported dependencies {dependency}')
                 dependencies.extend(self._prepare_imported_dependencies(file, dependency))
