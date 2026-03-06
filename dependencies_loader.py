@@ -57,7 +57,7 @@ class Loader:
     def _prepare_imported_dependencies(self, file: File, dependency: Dependency) -> list[Dependency]:
         file_spawn = file.spawn(dependency.prepare_path())
         properties = load_properties(file_spawn)
-        return load_dependencies(properties, file_spawn)
+        return self.load_dependencies(properties, file_spawn)
 
     def _get_dependencies(self, dependencies_source: dict):
         dependency = dependencies_source['dependency']
