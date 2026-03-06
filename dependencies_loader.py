@@ -11,10 +11,6 @@ def loads_dependencies(properties: dict, files: list[File]) -> list[Dependency]:
     return Loader().loads_dependencies(properties, files)
 
 
-def load_dependencies(properties: dict, file: File) -> list[Dependency]:
-    return Loader().load_dependencies(properties, file)
-
-
 class Loader:
 
     def __init__(self, ):

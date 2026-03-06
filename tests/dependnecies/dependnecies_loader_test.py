@@ -8,7 +8,7 @@ from tests.file import create_local_file
 class DependenciesLoaderTestCase(unittest.TestCase):
     def test_read_dependencies_from_file(self):
         properties = {"sample.one.version": "2.4.0", "sample.two.version": "4.3.2"}
-        actual = load_dependencies(properties, create_local_file("resources/pom.xml"))
+        actual = loads_dependencies(properties, [create_local_file("resources/pom.xml")])
         expected = [
             Dependency("sample", "${sample.one.version}", "com.sample.one", "sample-one-one", "2.4.0", "runtime"),
             Dependency("sample", "2.0.0", "com.sample.one", "sample-one-two", "2.0.0", "runtime"),
