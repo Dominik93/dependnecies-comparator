@@ -23,8 +23,8 @@ class Loader:
         return all_dependencies
 
     def _load_dependencies(self, file: File, properties: dict) -> list[Dependency]:
-        logger.debug("_load_dependencies", f'Load dependencies from {file}')
         if file.local_path() not in self._loaded_files:
+            logger.debug("_load_dependencies", f'Load dependencies from {file}')
             self._loaded_files.append(file.local_path())
             with open(file.local_path(), "rb") as f:
                 pom = xmltodict.parse(f)
