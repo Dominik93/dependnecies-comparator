@@ -25,14 +25,14 @@ class DependenciesComparatorTestCase(unittest.TestCase):
 
         expected = [
             CompareResult("reference:com.sample.two:sample-two-one:4.3.2", "{sample}", "gt",
-                "compared_to:com.sample.two:sample-two-one:4.0.2"),
+                          "compared_to:com.sample.two:sample-two-one:4.0.2"),
             CompareResult("reference:com.sample.two:sample-two-two:4.3.2", "{sample}", "eq",
-                "compared_to:com.sample.two:sample-two-two:4.3.2"),
+                          "compared_to:com.sample.two:sample-two-two:4.3.2"),
             CompareResult("reference:com.sample.two:sample-two-three:4.3.2", "{sample}", "not found", None),
             CompareResult("reference:com.sample.one:sample-one-one:2.4.0", "2.4.0", "lt",
-                "compared_to:com.sample.one:sample-one-one:2.4.1"),
+                          "compared_to:com.sample.one:sample-one-one:2.4.1"),
             CompareResult("reference:com.sample.one:sample-one-two:2.0.0", "2.0.0", "eq",
-                "compared_to:com.sample.one:sample-one-two:2.0.0")
+                          "compared_to:com.sample.one:sample-one-two:2.0.0")
         ]
         self.assertEqual(actual, expected)
 

@@ -36,11 +36,11 @@ def compare(reference_dependencies: list[Dependency], dependencies: list[Depende
     result = []
     for reference_dependency in reference_dependencies:
         reference = str(reference_dependency)
-        property = reference_dependency.property
+        dependency_property = reference_dependency.property
         dependency = find_item(dependencies, lambda dep: reference_dependency.same(dep))
         operator = dependency.map(lambda dep: _compare(reference_dependency, dep)).or_get("not found")
         compared_to = dependency.map(lambda dep: str(dep)).or_get(None)
-        result.append(CompareResult(reference, property, operator, compared_to))
+        result.append(CompareResult(reference, dependency_property, operator, compared_to))
     return result
 
 

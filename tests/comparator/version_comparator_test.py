@@ -4,8 +4,12 @@ from version_comparator import compare_versions
 
 
 class VersionComparatorTestCase(unittest.TestCase):
-    def test_should_return_plus_when_second_version_is_lower(self):
+    def test_should_return_plus_when_second_version_is_lower_major(self):
         actual = compare_versions("10.0.0", "9.0.0")
+        self.assertEqual(actual, 1)
+
+    def test_should_return_plus_when_second_version_is_lower_minor(self):
+        actual = compare_versions("1.1.0", "1.0.0")
         self.assertEqual(actual, 1)
 
     def test_should_return_plus_when_second_version_is_lower_four_digits(self):
@@ -20,9 +24,6 @@ class VersionComparatorTestCase(unittest.TestCase):
         actual = compare_versions("1.0.0", "1.0.0")
         self.assertEqual(actual, 0)
 
-    def test_should_return_plus_when_second_version_is_lower(self):
-        actual = compare_versions("1.1.0", "1.0.0")
-        self.assertEqual(actual, 1)
 
     def test_should_return_minus_when_second_version_is_bigger(self):
         actual = compare_versions("1.1.0", "1.11.0")
